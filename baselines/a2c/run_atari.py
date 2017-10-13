@@ -4,6 +4,7 @@ from baselines import logger
 from baselines.common import set_global_seeds
 from baselines import bench
 from baselines.a2c.a2c import learn
+from baselines.common import wrappers
 from baselines.common.vec_env.subproc_vec_env import SubprocVecEnv
 from baselines.common.atari_wrappers import wrap_deepmind
 from baselines.a2c.policies import CnnPolicy, LstmPolicy, LnLstmPolicy
@@ -17,6 +18,7 @@ def train(env_id, num_frames, seed, policy, lrschedule, num_cpu):
             env.seed(seed + rank)
             env = bench.Monitor(env, logger.get_dir() and 
                 os.path.join(logger.get_dir(), "{}.monitor.json".format(rank)))
+            env = wrappers.PrintEpisodeReward(env)
             gym.logger.setLevel(logging.WARN)
             return wrap_deepmind(env)
         return _thunk
