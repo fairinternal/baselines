@@ -2,6 +2,8 @@ import gym
 import time
 import json
 
+from baselines import logger
+
 class PrintEpisodeReward(gym.Wrapper):
     def __init__(self, env):
         super().__init__(env)
@@ -24,5 +26,5 @@ class PrintEpisodeReward(gym.Wrapper):
                 'ep_r': self.r,
                 'ep_len': self.len,
             }
-            print('[PrintEpisodeReward] ' + json.dumps(data))
+            logger.info('[PrintEpisodeReward] ' + json.dumps(data))
         return obs, r, done, info
